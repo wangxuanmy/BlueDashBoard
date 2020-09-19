@@ -11,6 +11,8 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.text.method.MovementMethod
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -55,6 +57,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        textView.movementMethod=ScrollingMovementMethod.getInstance()
 
     }
 
