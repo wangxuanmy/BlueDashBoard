@@ -29,6 +29,14 @@ class MainActivity : AppCompatActivity() {
 
     val Bt:BluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
     var bt_Socket:BluetoothSocket?=null
+    var data_buffer:String=""
+
+    var txt_vx:String=""
+    var txt_vy:String=""
+    var txt_sx:String=""
+    var txt_sy:String=""
+    var txt_long=""
+    var txt_lat=""
 //    var i:Int=0
 
     val btRunnable= Runnable {
@@ -41,6 +49,7 @@ class MainActivity : AppCompatActivity() {
                         var i:Int = bt_Socket!!.inputStream.read()
                         var C:Char=' '+i-32
                         textView.text =textView.text.toString() + C.toString()
+                        deal_data(C)
 
                     }
                 }
@@ -62,7 +71,55 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun deal_data(c:Char){
+        if(c!='\n'){
+            data_buffer = data_buffer+c
+        }
+        else{
+            var index_f:Int=0
+            var index_e:Int=0
+            var sub_s:String=""
+            index_f=data_buffer.indexOf("v_x=")
+            index_e=data_buffer.indexOf(',')
+            txt_vx = data_buffer.substring(index_f+4,index_e)
 
+            index_f=data_buffer.indexOf("v_y=")
+            index_e=data_buffer.indexOf(',',index_f)
+            txt_vy = data_buffer.substring(index_f+4,index_e)
+
+            index_f=data_buffer.indexOf("lati=")
+            index_e=data_buffer.indexOf(',',index_f)
+            txt_lat = data_buffer.substring(index_f+5,index_e)
+
+            index_f=data_buffer.indexOf("long=")
+            index_e=data_buffer.indexOf(',',index_f)
+            txt_long = data_buffer.substring(index_f+5,index_e)
+
+            index_f=data_buffer.indexOf("disx=")
+            index_e=data_buffer.indexOf(',',index_f)
+            txt_sx = data_buffer.substring(index_f+5,index_e)
+
+            index_f=data_buffer.indexOf("disy=")
+            index_e=data_buffer.indexOf(',',index_f)
+            txt_sy = data_buffer.substring(index_f+5,index_e)
+
+            runOnUiThread(Runnable() {
+                run{
+                    tv_vx.text =txt_vx
+                    tv_vy.text=txt_vy
+                    tv_sx.text=txt_sx
+                    tv_sy.text=txt_sy
+                    tv_lat.text=txt_lat
+                    tv_long.text=txt_long
+                }
+            })
+
+
+
+
+            data_buffer=""
+        }
+    }
 
     fun search_bt(view: View){
         val btn_1:Button=findViewById<Button>(R.id.button)
@@ -72,6 +129,7 @@ class MainActivity : AppCompatActivity() {
             }
             textView.visibility=View.INVISIBLE
             mac_list.visibility=View.VISIBLE
+            tbl.visibility=TableLayout.INVISIBLE
 
             var m_pairedDevices:Set<BluetoothDevice> = Bt!!.bondedDevices
             val list : ArrayList<String> = ArrayList()
@@ -92,6 +150,7 @@ class MainActivity : AppCompatActivity() {
                 bt_Socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
 
                 textView.visibility=View.VISIBLE
+                tbl.visibility=TableLayout.VISIBLE
                 mac_list.visibility=View.INVISIBLE
 
                 try {
