@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
 //                        bt_Socket!!.inputStream.read()
                         var i:Int = bt_Socket!!.inputStream.read()
                         var C:Char=' '+i-32
-                        textView.text =textView.text.toString() + C.toString()
+
+
                         deal_data(C)
 
                     }
@@ -81,27 +82,39 @@ class MainActivity : AppCompatActivity() {
             var sub_s:String=""
             index_f=data_buffer.indexOf("v_x=")
             index_e=data_buffer.indexOf(',')
-            txt_vx = data_buffer.substring(index_f+4,index_e)
+            if(index_e-index_f>4) {
+                txt_vx = data_buffer.substring(index_f + 4, index_e)
+            }
 
             index_f=data_buffer.indexOf("v_y=")
             index_e=data_buffer.indexOf(',',index_f)
-            txt_vy = data_buffer.substring(index_f+4,index_e)
+            if(index_e-index_f>4) {
+                txt_vy = data_buffer.substring(index_f + 4, index_e)
+            }
 
             index_f=data_buffer.indexOf("lati=")
             index_e=data_buffer.indexOf(',',index_f)
-            txt_lat = data_buffer.substring(index_f+5,index_e)
+            if(index_e-index_f>5) {
+                txt_lat = data_buffer.substring(index_f + 5, index_e)
+            }
 
             index_f=data_buffer.indexOf("long=")
             index_e=data_buffer.indexOf(',',index_f)
-            txt_long = data_buffer.substring(index_f+5,index_e)
+            if(index_e-index_f>5) {
+                txt_long = data_buffer.substring(index_f + 5, index_e)
+            }
 
             index_f=data_buffer.indexOf("disx=")
             index_e=data_buffer.indexOf(',',index_f)
-            txt_sx = data_buffer.substring(index_f+5,index_e)
+            if(index_e-index_f>5) {
+                txt_sx = data_buffer.substring(index_f + 5, index_e)
+            }
 
             index_f=data_buffer.indexOf("disy=")
             index_e=data_buffer.indexOf(',',index_f)
-            txt_sy = data_buffer.substring(index_f+5,index_e)
+            if(index_e-index_f>5) {
+                txt_sy = data_buffer.substring(index_f + 5, index_e)
+            }
 
             runOnUiThread(Runnable() {
                 run{
@@ -113,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                     tv_long.text=txt_long
                 }
             })
-
+            textView.text = data_buffer.toString()
 
 
 
